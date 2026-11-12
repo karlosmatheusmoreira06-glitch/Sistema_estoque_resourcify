@@ -40,10 +40,10 @@ export class UsuarioControle{
         }
         catch(error){
             console.error(error);
-
-        return res.status(500).json({
-            message: error.message || "Erro ao cadastrar Admin"
-        });
+            const mensagem = error instanceof Error ? error.message : "Erro ao cadastrar Admin";
+            return res.status(500).json({
+                message: mensagem
+            });
         }
     }
     public async buscarporId(req:Request, res:Response){
