@@ -42,7 +42,7 @@ export class UsuarioControle{
             console.error(error);
 
         return res.status(500).json({
-            message: "Erro ao cadastrar Admin"
+            message: error.message || "Erro ao cadastrar Admin"
         });
         }
     }
