@@ -5,16 +5,11 @@ import routes from "./routes";
 import cors from "cors";
 import multer from "multer";
 
-import { PASTA_UPLOADS } from "./middleware/upload.middleware";
-
 
 const app = express()
 app.use(cors());
 
 app.use(express.json())
-
-// Fotos enviadas pelos usuários (ex.: /uploads/itens/foto.jpg)
-app.use("/uploads", express.static(PASTA_UPLOADS));
 
 app.use((req, res, next) => {
     console.log("========== REQUISIÇÃO ==========");

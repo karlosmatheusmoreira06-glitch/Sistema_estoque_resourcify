@@ -15,12 +15,12 @@ export class ItensControle{
         this.itensServico = new ItensServico(itensDao)
     }
 
-    /** Monta a URL pública da foto a partir do arquivo recebido pelo multer. */
+    /** Monta a URL pública da foto a partir do arquivo recebido pelo multer (Cloudinary). */
     private urlDaFoto(req: Request): string | undefined {
         if (!req.file) {
             return undefined
         }
-        return `/uploads/itens/${req.file.filename}`
+        return (req.file as any).secure_url ?? undefined
     }
 
     /** Apaga do disco o arquivo recém-enviado quando a requisição falha. */

@@ -1,40 +1,14 @@
-import fs from "fs";
-import path from "path";
-
-import { PASTA_FOTOS_ITENS } from "../middleware/upload.middleware";
-
 /**
- * Converte a URL pública salva no banco (/uploads/itens/arquivo.jpg)
- * no caminho físico do arquivo no disco.
+ * Converte a URL pública salva no banco no caminho físico do arquivo no disco.
+ * Como agora usamos Cloudinary, não há arquivo local para converter.
+ * Retorna null sempre (links externos não precisam de caminho físico).
  */
 export function caminhoFisicoDaFoto(url?: string | null): string | null {
-    if (!url) {
-        return null;
-    }
-
-    // Nunca apaga arquivos de links externos.
-    if (/^https?:\/\//i.test(url)) {
-        return null;
-    }
-
-    const nome = path.basename(url);
-
-    if (!nome) {
-        return null;
-    }
-
-    return path.join(PASTA_FOTOS_ITENS, nome);
+    return null;
 }
 
-/** Remove a foto do disco sem derrubar a requisição se o arquivo não existir. */
+/** Remove a foto do disco (não faz mais nada, pois as fotos estão no Cloudinary). */
 export function removerFotoDoDisco(url?: string | null): void {
-    const caminho = caminhoFisicoDaFoto(url);
-
-    if (!caminho) {
-        return;
-    }
-
-    fs.promises.unlink(caminho).catch(() => {
-        // Arquivo já removido ou inexistente: não é um erro de negócio.
-    });
+    // Não há mais arquivo local para remover.
+    return;
 }
