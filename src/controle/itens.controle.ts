@@ -20,7 +20,15 @@ export class ItensControle{
         if (!req.file) {
             return undefined
         }
-        return (req.file as any).secure_url ?? undefined
+
+        // O multer-storage-cloudinary preenche "path" com a secure_url.
+        const arquivo = req.file as Express.Multer.File & {
+            secure_url?: string
+            path?: string
+            url?: string
+        }
+
+        return arquivo.secure_url ?? arquivo.path ?? arquivo.url ?? undefined
     }
 
     /** Apaga do disco o arquivo recém-enviado quando a requisição falha. */
