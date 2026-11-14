@@ -2,9 +2,17 @@ import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import multer from "multer";
 
-const CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "").trim();
-const API_KEY = (process.env.CLOUDINARY_API_KEY || "").trim();
-const API_SECRET = (process.env.CLOUDINARY_API_SECRET || "").trim();
+// Variáveis de ambiente limpas (sem espaços, aspas ou "@" acidental).
+function limpar(valor: string | undefined): string {
+    return (valor || "")
+        .trim()
+        .replace(/^["']|["']$/g, "")
+        .trim();
+}
+
+const CLOUD_NAME = limpar(process.env.CLOUDINARY_CLOUD_NAME).replace(/^@+/, "");
+const API_KEY = limpar(process.env.CLOUDINARY_API_KEY);
+const API_SECRET = limpar(process.env.CLOUDINARY_API_SECRET);
 
 // Configuração do Cloudinary usando variáveis de ambiente
 cloudinary.config({

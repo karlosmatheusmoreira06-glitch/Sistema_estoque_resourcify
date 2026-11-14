@@ -17,9 +17,18 @@ require("dotenv").config({ path: __dirname + "/.env" });
 
 const { v2: cloudinary } = require("cloudinary");
 
-const cloudName = (process.env.CLOUDINARY_CLOUD_NAME || "").trim();
-const apiKey = (process.env.CLOUDINARY_API_KEY || "").trim();
-const apiSecret = (process.env.CLOUDINARY_API_SECRET || "").trim();
+// Os três valores vêm do .env, limpando espaços/aspas e o "@" acidental
+// (o Dashboard às vezes é copiado como "@nome-da-cloud").
+function limpar(valor) {
+    return String(valor || "")
+        .trim()
+        .replace(/^["']|["']$/g, "")
+        .trim();
+}
+
+const cloudName = limpar(process.env.CLOUDINARY_CLOUD_NAME).replace(/^@+/, "");
+const apiKey = limpar(process.env.CLOUDINARY_API_KEY);
+const apiSecret = limpar(process.env.CLOUDINARY_API_SECRET);
 
 const PNG_1X1 = Buffer.from(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==",
